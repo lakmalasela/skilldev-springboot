@@ -1,6 +1,7 @@
 package com.giganerds.skilldev.entity;
 
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,14 +13,28 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "car")
 public class CarEntity {
 
-private Long id;
-private String model;
-private String carcode;
-private LocalDate modelyear;
-private String fueltype;
-private String color;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Basic(optional = false)
+    private String model;
+
+    @Basic(optional = false)
+    private String carcode;
+
+    @Basic(optional = false)
+    private LocalDate modelyear;
+
+    @Basic(optional = false)
+    private String fueltype;
+
+    @Basic(optional = false)
+    private String color;
 
 
 
