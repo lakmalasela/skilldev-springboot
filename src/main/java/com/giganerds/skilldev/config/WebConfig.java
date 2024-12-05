@@ -1,6 +1,7 @@
 package com.giganerds.skilldev.config;
 
 
+import com.giganerds.skilldev.util.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -15,28 +17,44 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class WebConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+//
+//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+//
+//    public WebConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+//        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+//    }
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(csrf -> csrf.disable())  // Disable CSRF protection (useful for Postman testing)
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/auth/login").permitAll()  // Allow public access to login
+////                        .requestMatchers("/user/register").authenticated()  // Require authentication for register
+//                        .anyRequest().authenticated()  // All other requests require authentication
+//                )
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // Add JWT filter before the default authentication filter
+//
+//        return http.build();
+//    }
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public WebConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
-
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())  // Disable CSRF protection (useful for Postman testing)
+        http.csrf(csrf -> csrf.disable()) // Disable CSRF for testing purposes
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/register").permitAll()  // Allow public access to register endpoint
-                        .anyRequest().authenticated()  // All other requests require authentication
+                        .requestMatchers("/auth/login").permitAll() // Public login endpoint
+                        .anyRequest().authenticated() // All other requests require authentication
                 )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-                .formLogin(form -> form  // Use formLogin() without deprecated method
-                        .loginPage("/login")  // Custom login page (optional, defaults to a Spring Security login page)
-                        .permitAll()  // Allow public access to the login page
-                )
-                .httpBasic(httpBasic -> httpBasic.disable());  // Disable HTTP Basic Authentication (avoid deprecated)
-//                .formLogin(withDefaults());
         return http.build();
     }
+
+
 }
