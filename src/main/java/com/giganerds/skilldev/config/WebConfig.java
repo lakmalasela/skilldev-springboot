@@ -46,7 +46,9 @@ public class WebConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()) // Disable CSRF for testing purposes
+        http.csrf(csrf -> csrf.disable())
+                .cors(cors -> {})
+                // Disable CSRF for testing purposes
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll() // Public login endpoint
                         .anyRequest().authenticated() // All other requests require authentication
