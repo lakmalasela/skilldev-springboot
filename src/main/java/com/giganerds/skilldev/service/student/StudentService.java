@@ -11,4 +11,6 @@ public interface StudentService {
     List<StudentEntity> getAllStudents(); // Get all students
     StudentEntity updateStudent(Long id, StudentEntity student); // Update a student
     void deleteStudent(Long id); // Delete a student
+
+    StudentEntity getStudentByStudentCode(String studentCode);
 }

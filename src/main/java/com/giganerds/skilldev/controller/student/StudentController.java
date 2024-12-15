@@ -49,4 +49,10 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/byStudentCode")
+    public ResponseEntity<StudentEntity> getbystudentcode(@RequestParam String studentCode) {
+        StudentEntity studentBycode = studentService.getStudentByStudentCode(studentCode);
+        return ResponseEntity.ok(studentBycode);
+    }
 }

@@ -53,6 +53,7 @@ public class WebConfig {
                         .requestMatchers("/auth/login").permitAll() // Public login endpoint
                         .anyRequest().authenticated() // All other requests require authentication
                 )
+                
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

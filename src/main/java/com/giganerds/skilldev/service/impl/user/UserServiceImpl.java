@@ -7,6 +7,9 @@ import com.giganerds.skilldev.repository.user.UserRepository;
 import com.giganerds.skilldev.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,4 +53,11 @@ public class UserServiceImpl implements UserService {
         daouser.save(user);
         return user.getUsername();
     }
+
+    @Override
+    public Page<UserEntity> getUsers(String search, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return daouser.findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search, pageable);
+    }
+
 }

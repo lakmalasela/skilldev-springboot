@@ -43,4 +43,12 @@ public class StudentServiceImpl implements StudentService {
         StudentEntity student = getStudentById(id);
         daostudent.delete(student);
     }
+
+    @Override
+    public StudentEntity getStudentByStudentCode(String studentCode) {
+
+        return daostudent.getStudentByStudentCode(studentCode);
+    }
+
+
 }
